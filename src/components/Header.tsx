@@ -3,93 +3,86 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 const sections = [
-  { label: 'Bars & Restaurants', href: '/bars', short: 'Bars' },
-  { label: 'Travel', href: '/travel', short: 'Travel' },
-  { label: 'Film', href: '/movies', short: 'Film' },
-  { label: 'About', href: '/about', short: 'About' },
+  { label: 'Bars & Restaurants', href: '/bars' },
+  { label: 'Travel', href: '/travel' },
+  { label: 'Film', href: '/movies' },
+  { label: 'About', href: '/about' },
 ];
 
-function getTodayString() {
-  return new Date().toLocaleDateString('en-US', {
-    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-  });
-}
-
 export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
-    <header className="bg-paper-white border-b border-ink">
-      {/* Top meta bar */}
-      <div className="border-b border-ink/20">
-        <div className="max-w-6xl mx-auto px-4 py-1.5 flex justify-between items-center">
-          <span className="byline hidden sm:block">{getTodayString()}</span>
-          <span className="byline text-ink-faint hidden sm:block">Est. 2025 · Columbus, OH</span>
-          <span className="byline block sm:hidden text-ink-faint">Est. 2025 · Columbus, OH</span>
-        </div>
-      </div>
-
-      {/* Masthead */}
-      <div className="max-w-6xl mx-auto px-4 py-6 text-center">
-        <div className="rule-thick mb-3" />
-        <Link href="/" className="block group">
-          <h1 className="masthead text-5xl sm:text-7xl md:text-8xl tracking-tight text-ink group-hover:opacity-80 transition-opacity">
-            Pretentious Pete
-          </h1>
-        </Link>
-        <p className="deck text-sm sm:text-base text-ink-muted mt-2 tracking-wide">
-          Opinions on bars, travel &amp; film &mdash; delivered with conviction
-        </p>
-        <div className="rule-thick mt-3" />
-      </div>
-
-      {/* Navigation */}
-      <nav className="max-w-6xl mx-auto px-4 pb-0">
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center justify-center gap-0 border-b border-ink">
-          {sections.map((s, i) => (
-            <span key={s.href} className="flex items-center">
-              {i > 0 && <span className="text-ink/30 mx-3 text-xs">◆</span>}
-              <Link
-                href={s.href}
-                className="section-label py-2 px-3 hover:text-accent-red transition-colors"
-              >
+    <header style={{ background: 'var(--paper)', borderBottom: '1px solid var(--ink)' }}>
+      {/* Nav row */}
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 32px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 18, paddingBottom: 0 }}>
+          {/* Desktop nav left */}
+          <nav style={{ display: 'flex', gap: 28 }} className="hidden md:flex">
+            {sections.slice(0, 3).map((s) => (
+              <Link key={s.href} href={s.href} className="label hover-fade" style={{ color: 'var(--ink)' }}>
                 {s.label}
               </Link>
-            </span>
-          ))}
-        </div>
+            ))}
+          </nav>
 
-        {/* Mobile nav toggle */}
-        <div className="flex md:hidden items-center justify-between border-b border-ink pb-3">
-          <span className="section-label text-ink-muted">Menu</span>
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="p-1 text-ink"
-            aria-label="Toggle navigation"
-          >
-            <div className="space-y-1">
-              <span className={`block w-6 h-0.5 bg-ink transition-transform ${menuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
-              <span className={`block w-6 h-0.5 bg-ink transition-opacity ${menuOpen ? 'opacity-0' : ''}`} />
-              <span className={`block w-6 h-0.5 bg-ink transition-transform ${menuOpen ? '-rotate-45 -translate-y-1.5' : ''}`} />
+          {/* Mobile hamburger */}
+          <button className="md:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+              {[0,1,2].map(i => (
+                <span key={i} style={{ display: 'block', width: 22, height: 1.5, background: 'var(--ink)' }} />
+              ))}
             </div>
           </button>
+
+          {/* About right */}
+          <Link href="/about" className="label hover-fade hidden md:block" style={{ color: 'var(--ink)' }}>
+            About
+          </Link>
         </div>
-        {menuOpen && (
-          <div className="md:hidden border-b border-ink pb-2">
+
+        {/* Masthead */}
+        <div style={{ textAlign: 'center', padding: '20px 0 18px' }}>
+          <Link href="/" className="hover-fade" style={{ display: 'inline-block' }}>
+            <h1 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(48px, 10vw, 88px)',
+              fontWeight: 900,
+              lineHeight: 1,
+              letterSpacing: '-0.03em',
+              margin: 0,
+              color: 'var(--ink)',
+            }}>
+              Pretentious Pete
+            </h1>
+          </Link>
+          <p className="label" style={{ color: 'var(--ink-faint)', marginTop: 8, letterSpacing: '0.16em' }}>
+            Bars &middot; Travel &middot; Film &mdash; with conviction
+          </p>
+        </div>
+
+        {/* Bottom rule double */}
+        <div style={{ borderTop: '4px double var(--ink)' }} />
+      </div>
+
+      {/* Mobile menu */}
+      {open && (
+        <div style={{ borderTop: '1px solid var(--rule)', background: 'var(--paper)' }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto', padding: '12px 32px' }}>
             {sections.map((s) => (
               <Link
                 key={s.href}
                 href={s.href}
-                className="block section-label py-2.5 hover:text-accent-red transition-colors border-b border-ink/10 last:border-0"
-                onClick={() => setMenuOpen(false)}
+                className="label"
+                onClick={() => setOpen(false)}
+                style={{ display: 'block', padding: '10px 0', borderBottom: '1px solid var(--rule)', color: 'var(--ink)' }}
               >
                 {s.label}
               </Link>
             ))}
           </div>
-        )}
-      </nav>
+        </div>
+      )}
     </header>
   );
 }

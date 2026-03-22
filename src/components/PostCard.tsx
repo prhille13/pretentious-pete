@@ -7,14 +7,14 @@ export interface Post {
   date: string;
   section: 'bars' | 'travel' | 'movies';
   featured?: boolean;
-  rating?: number; // 1-5
+  rating?: number;
   location?: string;
 }
 
 const sectionColors: Record<Post['section'], string> = {
-  bars: 'text-accent-red',
-  travel: 'text-accent-slate',
-  movies: 'text-accent-gold',
+  bars: 'var(--red)',
+  travel: 'var(--slate)',
+  movies: 'var(--gold)',
 };
 
 const sectionLabels: Record<Post['section'], string> = {
@@ -25,62 +25,119 @@ const sectionLabels: Record<Post['section'], string> = {
 
 function Stars({ rating }: { rating: number }) {
   return (
-    <span className="flex gap-0.5">
-      {[1, 2, 3, 4, 5].map((n) => (
-        <span key={n} className={n <= rating ? 'star-filled' : 'star-empty'} style={{ fontSize: '0.65rem' }}>
-          ★
-        </span>
+    <span style={{ display: 'inline-flex', gap: 2 }}>
+      {[1,2,3,4,5].map((n) => (
+        <span key={n} style={{ fontSize: 11, color: n <= rating ? 'var(--gold)' : 'var(--rule)' }}>★</span>
       ))}
     </span>
   );
 }
 
-export function PostCard({ post, size = 'normal' }: { post: Post; size?: 'normal' | 'large' | 'small' }) {
-  const href = `/${post.section}/${post.slug}`;
+function SectionTag({ section }: { section: Post['section'] }) {
+  return (
+    <span className="label" style={{ color: sectionColors[section], display: 'block', marginBottom: 10 }}>
+      {sectionLabels[section]}
+    </span>
+  );
+}
 
-  if (size === 'large') {
-    return (
-      <Link href={href} className="block card-hover group">
-        <div className="rule-thick mb-4" />
-        <span className={`section-label ${sectionColors[post.section]}`}>{sectionLabels[post.section]}</span>
-        <h2 className="headline text-4xl sm:text-5xl mt-2 mb-3 group-hover:opacity-70 transition-opacity">
+function ImgPlaceholder({ aspect = '3/2' }: { aspect?: string }) {
+  return (
+    <div className="img-placeholder" style={{ width: '100%', aspectRatio: aspect }}>
+      Photo
+    </div>
+  );
+}
+
+// Hero — image left, text right
+export function HeroCard({ post }: { post: Post }) {
+  const href = `/${post.section}/${post.slug}`;
+  return (
+    <Link href={href} className="hover-fade" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', textDecoration: 'none', color: 'inherit' }}>
+      <ImgPlaceholder aspect="4/3" />
+      <div style={{ padding: '40px 40px', display: 'flex', flexDirection: 'column', justifyContent: 'center', borderLeft: '1px solid var(--rule)' }}>
+        <SectionTag section={post.section} />
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 36, fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.02em', margin: '0 0 14px' }}>
           {post.title}
         </h2>
-        <p className="deck text-xl text-ink-muted mb-3">{post.deck}</p>
-        <div className="flex items-center gap-3">
+        <p style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontStyle: 'italic', color: 'var(--ink-muted)', lineHeight: 1.5, margin: '0 0 16px' }}>
+          {post.deck}
+        </p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <span className="byline">{post.date}</span>
-          {post.location && <span className="byline text-ink-faint">· {post.location}</span>}
+          {post.location && <span className="byline">&middot; {post.location}</span>}
           {post.rating !== undefined && <Stars rating={post.rating} />}
         </div>
-      </Link>
-    );
-  }
-
-  if (size === 'small') {
-    return (
-      <Link href={href} className="block card-hover group py-3 border-b border-ink/10 last:border-0">
-        <span className={`section-label ${sectionColors[post.section]} text-xs`}>{sectionLabels[post.section]}</span>
-        <h4 className="headline text-base mt-0.5 group-hover:opacity-70 transition-opacity leading-snug">
-          {post.title}
-        </h4>
-        <span className="byline">{post.date}</span>
-      </Link>
-    );
-  }
-
-  return (
-    <Link href={href} className="block card-hover group">
-      <div className="rule-thin mb-3" />
-      <span className={`section-label ${sectionColors[post.section]}`}>{sectionLabels[post.section]}</span>
-      <h3 className="headline text-2xl mt-1.5 mb-2 group-hover:opacity-70 transition-opacity">
-        {post.title}
-      </h3>
-      <p className="deck text-sm text-ink-muted mb-2">{post.deck}</p>
-      <div className="flex items-center gap-3">
-        <span className="byline">{post.date}</span>
-        {post.location && <span className="byline text-ink-faint">· {post.location}</span>}
-        {post.rating !== undefined && <Stars rating={post.rating} />}
+        <span className="label" style={{ color: 'var(--red)', marginTop: 20, borderBottom: '1px solid var(--red)', display: 'inline-block', paddingBottom: 1 }}>
+          Read the piece &rarr;
+        </span>
       </div>
     </Link>
   );
+}
+
+// Standard card — image top, text below
+export function StoryCard({ post }: { post: Post }) {
+  const href = `/${post.section}/${post.slug}`;
+  return (
+    <Link href={href} className="hover-fade" style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+      <ImgPlaceholder aspect="4/3" />
+      <div style={{ padding: '16px 0 0' }}>
+        <SectionTag section={post.section} />
+        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, lineHeight: 1.2, letterSpacing: '-0.01em', margin: '0 0 8px' }}>
+          {post.title}
+        </h3>
+        <p style={{ fontSize: 13, color: 'var(--ink-muted)', lineHeight: 1.55, margin: '0 0 8px' }}>
+          {post.deck}
+        </p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span className="byline">{post.date}</span>
+          {post.location && <span className="byline">&middot; {post.location}</span>}
+          {post.rating !== undefined && <Stars rating={post.rating} />}
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+// Wide card — image left, text right (smaller than hero)
+export function WideCard({ post }: { post: Post }) {
+  const href = `/${post.section}/${post.slug}`;
+  return (
+    <Link href={href} className="hover-fade" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', textDecoration: 'none', color: 'inherit' }}>
+      <ImgPlaceholder aspect="16/9" />
+      <div style={{ padding: '28px 32px', display: 'flex', flexDirection: 'column', justifyContent: 'center', borderLeft: '1px solid var(--rule)' }}>
+        <SectionTag section={post.section} />
+        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.015em', margin: '0 0 10px' }}>
+          {post.title}
+        </h3>
+        <p style={{ fontFamily: 'var(--font-display)', fontSize: 15, fontStyle: 'italic', color: 'var(--ink-muted)', lineHeight: 1.5, margin: '0 0 12px' }}>
+          {post.deck}
+        </p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span className="byline">{post.date}</span>
+          {post.location && <span className="byline">&middot; {post.location}</span>}
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+// List item — text only, no image
+export function ListCard({ post }: { post: Post }) {
+  const href = `/${post.section}/${post.slug}`;
+  return (
+    <Link href={href} className="hover-fade" style={{ display: 'block', textDecoration: 'none', color: 'inherit', padding: '14px 0', borderBottom: '1px solid var(--rule)' }}>
+      <SectionTag section={post.section} />
+      <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 15, fontWeight: 700, lineHeight: 1.3, margin: '0 0 4px' }}>
+        {post.title}
+      </h4>
+      <span className="byline">{post.date}{post.location ? ` · ${post.location}` : ''}</span>
+    </Link>
+  );
+}
+
+// Sidebar small card (for article pages)
+export function PostCard({ post }: { post: Post }) {
+  return <ListCard post={post} />;
 }

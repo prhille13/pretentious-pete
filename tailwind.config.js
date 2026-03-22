@@ -8,9 +8,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        serif: ['var(--font-editorial)', 'Georgia', 'serif'],
-        sans: ['var(--font-body)', 'system-ui', 'sans-serif'],
         display: ['var(--font-display)', 'Georgia', 'serif'],
+        body: ['var(--font-body)', 'system-ui', 'sans-serif'],
       },
       colors: {
         ink: {
@@ -20,19 +19,13 @@ module.exports = {
           faint: '#9e9e98',
         },
         paper: {
-          DEFAULT: '#f7f5f0',
-          warm: '#ede9e0',
-          white: '#fdfcf9',
+          DEFAULT: '#faf9f6',
+          warm: '#f0ede6',
         },
-        accent: {
-          red: '#c0392b',
-          gold: '#b8860b',
-          slate: '#2c3e50',
-        },
-      },
-      fontSize: {
-        'headline': ['3.5rem', { lineHeight: '1.05', letterSpacing: '-0.02em', fontWeight: '700' }],
-        'subhead': ['1.5rem', { lineHeight: '1.3', letterSpacing: '-0.01em', fontWeight: '400' }],
+        rule: '#d4d0c8',
+        red: '#c0392b',
+        gold: '#b8860b',
+        slate: '#2c3e50',
       },
     },
   },

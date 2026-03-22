@@ -2,46 +2,45 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-ink text-paper mt-16">
-      <div className="max-w-6xl mx-auto px-4 py-10">
-        <div className="rule-thin border-paper/20 mb-8" />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer style={{ background: 'var(--ink)', color: 'var(--paper)', marginTop: 64 }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '48px 32px 32px' }}>
+        <div style={{ borderTop: '1px solid rgba(250,249,246,0.15)', marginBottom: 40 }} />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 40 }}>
           <div>
-            <h3 className="masthead text-2xl text-paper mb-2">Pretentious Pete</h3>
-            <p className="text-paper/60 text-sm font-light leading-relaxed">
-              Bars, restaurants, travel, and film — with strong opinions and no apologies.
-              Based in Columbus, OH.
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 900, letterSpacing: '-0.02em', margin: '0 0 10px' }}>
+              Pretentious Pete
+            </h3>
+            <p style={{ fontSize: 13, color: 'rgba(250,249,246,0.5)', lineHeight: 1.65, fontWeight: 300 }}>
+              Bars, restaurants, travel, and film — with strong opinions and no apologies. Based in Columbus, OH.
             </p>
           </div>
           <div>
-            <p className="section-label text-paper/40 mb-3">Sections</p>
-            <ul className="space-y-1.5">
-              {[
-                { label: 'Bars & Restaurants', href: '/bars' },
-                { label: 'Travel', href: '/travel' },
-                { label: 'Film', href: '/movies' },
-                { label: 'About', href: '/about' },
-              ].map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className="text-paper/70 hover:text-paper text-sm transition-colors">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <p className="label" style={{ color: 'rgba(250,249,246,0.3)', marginBottom: 14 }}>Sections</p>
+            {[
+              { label: 'Bars & Restaurants', href: '/bars' },
+              { label: 'Travel', href: '/travel' },
+              { label: 'Film', href: '/movies' },
+              { label: 'About', href: '/about' },
+            ].map((l) => (
+              <div key={l.href} style={{ marginBottom: 8 }}>
+                <Link href={l.href} className="hover-fade" style={{ fontSize: 13, color: 'rgba(250,249,246,0.65)', textDecoration: 'none' }}>
+                  {l.label}
+                </Link>
+              </div>
+            ))}
           </div>
           <div>
-            <p className="section-label text-paper/40 mb-3">Fine Print</p>
-            <p className="text-paper/50 text-xs leading-relaxed">
-              All opinions are my own and completely correct. No sponsored content. No press trips.
-              No free meals that have changed my mind about anything.
+            <p className="label" style={{ color: 'rgba(250,249,246,0.3)', marginBottom: 14 }}>Fine print</p>
+            <p style={{ fontSize: 12, color: 'rgba(250,249,246,0.4)', lineHeight: 1.7, fontWeight: 300 }}>
+              All opinions are my own and completely correct. No sponsored content. No press trips. No free meals that have changed my mind about anything.
             </p>
           </div>
         </div>
-        <div className="rule-thin border-paper/20 mt-8 mb-4" />
-        <p className="text-center text-paper/30 text-xs byline">
-          © {new Date().getFullYear()} Pretentious Pete · pretentiouspete.com
-        </p>
+        <div style={{ borderTop: '1px solid rgba(250,249,246,0.1)', marginTop: 40, paddingTop: 20, textAlign: 'center' }}>
+          <p className="label" style={{ color: 'rgba(250,249,246,0.25)' }}>
+            &copy; {new Date().getFullYear()} Pretentious Pete &middot; pretentiouspete.com
+          </p>
+        </div>
       </div>
     </footer>
   );

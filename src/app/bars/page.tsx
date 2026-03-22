@@ -8,13 +8,12 @@ export const metadata: Metadata = {
 };
 
 export default function BarsPage() {
-  const posts = getPostsBySection('bars');
   return (
     <SectionPage
       title="Bars & Restaurants"
       tagline="Reviews, opinions, and dispatches from the bar stool."
-      posts={posts}
-      accentClass="text-accent-red"
+      posts={getPostsBySection('bars')}
+      accentColor="var(--red)"
     />
   );
 }

@@ -8,13 +8,12 @@ export const metadata: Metadata = {
 };
 
 export default function MoviesPage() {
-  const posts = getPostsBySection('movies');
   return (
     <SectionPage
       title="Film"
       tagline="Reviews and criticism, mostly of things I loved or hated."
-      posts={posts}
-      accentClass="text-accent-gold"
+      posts={getPostsBySection('movies')}
+      accentColor="var(--gold)"
     />
   );
 }
